@@ -24,6 +24,7 @@ public class AnswersService {
             return null;
         }
     }
+
     public List<Answer> answersByQuestion(Question question) {
         try {
             return answersRepository.findByQuestion(question.getId());
@@ -31,6 +32,7 @@ public class AnswersService {
             return null;
         }
     }
+
     public String createAnswer(Answer answer) {
         try {
             Optional<Question> optionalQuestion = Optional.ofNullable(questionsService.readQuestion(answer.getQuestion().getId()));

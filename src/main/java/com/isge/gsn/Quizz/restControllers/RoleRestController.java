@@ -2,7 +2,6 @@ package com.isge.gsn.Quizz.restControllers;
 
 import com.isge.gsn.Quizz.dto.RoleDTO;
 import com.isge.gsn.Quizz.models.Role;
-import com.isge.gsn.Quizz.repositories.RolesRepository;
 import com.isge.gsn.Quizz.services.RolesService;
 import com.isge.gsn.Quizz.utils.DataMapping;
 import lombok.AllArgsConstructor;
@@ -20,8 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 public class RoleRestController {
 
-    private final RolesRepository rolesRepository;
-
     private final RolesService rolesService;
 
     @GetMapping
@@ -38,7 +35,7 @@ public class RoleRestController {
     }
 
     @PostMapping("/add")
-    ResponseEntity<RoleDTO> createUser(@RequestBody RoleDTO roleDTO) {
+    ResponseEntity<RoleDTO> create(@RequestBody RoleDTO roleDTO) {
 
         Role role= rolesService.saveRole(DataMapping.toRole(roleDTO));
 
@@ -46,15 +43,15 @@ public class RoleRestController {
     }
 
     @GetMapping("/view/{id}")
-    ResponseEntity<RoleDTO> find(@PathVariable long id) {
+    ResponseEntity<RoleDTO> read(@PathVariable long id) {
 
         RoleDTO roleDTO = DataMapping.toRoleDTO(rolesService.readRole(id));
 
         return new ResponseEntity<>(roleDTO, HttpStatus.OK);
     }
 
-    @PutMapping("/updateUser")
-    ResponseEntity<String> updateBook(@RequestBody RoleDTO roleDTO) {
+    @PutMapping("/update")
+    ResponseEntity<String> update(@RequestBody RoleDTO roleDTO) {
 
         String message = rolesService.updateRole(DataMapping.toRole(roleDTO));
 

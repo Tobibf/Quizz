@@ -3,22 +3,22 @@ package com.isge.gsn.Quizz.utils;
 import com.isge.gsn.Quizz.dto.*;
 import com.isge.gsn.Quizz.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataMapping {
 
-    @Autowired
-    private static PasswordEncoder passwordEncoder;
+  //  @Autowired
+  //  private static PasswordEncoder passwordEncoder;
 
 
     /*
     * Convert Objet RoleDTO to Role
     * */
     public static Role toRole(RoleDTO roleDTO){
-        if(roleDTO == null)     return null;
+        if(roleDTO == null)    return null;
 
         Role role = new Role();
 
@@ -52,7 +52,7 @@ public class DataMapping {
 
         user.setFullName(userDTO.getFullName());
         user.setUserName(userDTO.getUsername());
-        user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
+     //   user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
         user.setRole(toRole(userDTO.getRoleDTO()));
 
         return user;
@@ -147,13 +147,13 @@ public class DataMapping {
         questionDTO.setId(question.getId());
         questionDTO.setContent(question.getContent());
         questionDTO.setAnswer(question.getAnswer());
-        questionDTO.setAnswers(toAnswersDTO(question.getAnswers()));
+        questionDTO.setAnswers(toAnswersDTOWithOutQuestion(question.getAnswers()));
 
         return questionDTO;
     }
 
     /*
-     * Convert Objet Question to QuestionDTO
+     * Convert Objet Question to QuestionDTO with out answers
      * */
     public static QuestionDTO toQuestionDTOWithOutAnswers(Question question){
         if(null == question)    return null;
@@ -214,7 +214,7 @@ public class DataMapping {
     /*
      * To convert a list of Answer to a list of AnswerDTO
      * */
-    private static List<AnswerDTO> toAnswersDTO(List<Answer> answers) {
+    private static List<AnswerDTO> toAnswersDTOWithOutQuestion(List<Answer> answers) {
         List<AnswerDTO> answerDTOS = new ArrayList<>();
         for (Answer answer : answers){
             answerDTOS.add(toAnswerDTOWithOutQuestion(answer));

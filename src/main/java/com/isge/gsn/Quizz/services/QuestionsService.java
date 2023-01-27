@@ -12,12 +12,22 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class QuestionsService {
-
     private final QuestionsRepository questionsRepository;
 
     public List<Question> allQuestions() {
         try {
             return questionsRepository.findAll();
+        } catch (Exception exception) {
+            return null;
+        }
+    }
+
+    /*
+    * Get 5 questions by random
+    * */
+    public List<Question> randQuestions() {
+        try {
+            return questionsRepository.randomQuestions();
         } catch (Exception exception) {
             return null;
         }

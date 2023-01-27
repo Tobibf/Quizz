@@ -2,7 +2,6 @@ package com.isge.gsn.Quizz.restControllers;
 
 import com.isge.gsn.Quizz.dto.UserDTO;
 import com.isge.gsn.Quizz.models.User;
-import com.isge.gsn.Quizz.repositories.UsersRepository;
 import com.isge.gsn.Quizz.services.UsersService;
 import com.isge.gsn.Quizz.utils.DataMapping;
 import lombok.AllArgsConstructor;
@@ -19,8 +18,6 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class UserRestController {
-    private final UsersRepository usersJPARepository;
-
     private final UsersService usersService;
 
     @GetMapping
@@ -42,21 +39,22 @@ public class UserRestController {
 
     @PostMapping("/createUser/admin/admin/Quiz")
     ResponseEntity<String> createAdmin(@RequestBody UserDTO userDTO) {
+
         String message = usersService.createAdmin(DataMapping.toUser(userDTO));
 
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
 
     @GetMapping("/view/{id}")
-    ResponseEntity<UserDTO> find(@PathVariable Long id) {
+    ResponseEntity<UserDTO> read(@PathVariable long id) {
 
         UserDTO userModel = DataMapping.toUserDTO(usersService.readUser(id));
 
         return new ResponseEntity<>(userModel, HttpStatus.OK);
     }
 
-    @PutMapping("/updateUser")
-    ResponseEntity<String> updateBook(@RequestBody UserDTO userDTO) {
+    @PutMapping("/update")
+    ResponseEntity<String> update(@RequestBody UserDTO userDTO) {
 
         String message = usersService.updateUser(DataMapping.toUser(userDTO));
 
@@ -64,8 +62,10 @@ public class UserRestController {
     }
 
     @DeleteMapping("/delete/{id}")
-    ResponseEntity<String> delete(@PathVariable Long id) {
+    ResponseEntity<String> delete(@PathVariable long id) {
+
         String message = usersService.deleteUser(id);
+
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

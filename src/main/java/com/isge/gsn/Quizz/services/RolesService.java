@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @Slf4j
 public class RolesService {
-
     private final RolesRepository rolesRepository;
 
     public List<Role> roleList() {
@@ -32,7 +31,6 @@ public class RolesService {
             return null;
         }
     }
-
 
     public Role readRole(long id) {
         return rolesRepository.findById(id).orElse(null);
