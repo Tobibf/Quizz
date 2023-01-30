@@ -81,7 +81,7 @@ public class UsersService {
         }
     }
 
-    public String deleteUser(Long id) {
+    public String deleteUser(long id) {
         try {
             usersJPARepository.deleteById(id);
             return "User deleted successfully";
@@ -96,6 +96,10 @@ public class UsersService {
 
     public Optional<User> getAdmin() {
         return usersJPARepository.findAdmin();
+    }
+
+    public Boolean userExist(long id){
+        return usersJPARepository.existsById(id);
     }
 
 }

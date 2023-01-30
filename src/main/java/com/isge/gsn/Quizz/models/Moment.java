@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -28,9 +29,12 @@ public class Moment {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @Column(name = "game_time",updatable = false)
-    @CreationTimestamp
+    @Column(name = "game_time",updatable = true)
+    @UpdateTimestamp
     private LocalDateTime gameTime;
 
+    @Column(name = "created_at",updatable = false)
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
 }

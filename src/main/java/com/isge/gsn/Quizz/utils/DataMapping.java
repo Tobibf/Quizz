@@ -2,23 +2,23 @@ package com.isge.gsn.Quizz.utils;
 
 import com.isge.gsn.Quizz.dto.*;
 import com.isge.gsn.Quizz.models.*;
-import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataMapping {
 
-  //  @Autowired
-  //  private static PasswordEncoder passwordEncoder;
+
+    //  @Autowired
+    //private static PasswordEncoder passwordEncoder;
 
 
     /*
-    * Convert Objet RoleDTO to Role
-    * */
-    public static Role toRole(RoleDTO roleDTO){
-        if(roleDTO == null)    return null;
+     * Convert Objet RoleDTO to Role
+     * */
+    public static Role toRole(RoleDTO roleDTO) {
+        if (roleDTO == null) return null;
 
         Role role = new Role();
 
@@ -31,8 +31,8 @@ public class DataMapping {
     /*
      * Convert Objet Role to RoleDTO
      * */
-    public static RoleDTO toRoleDTO(Role role){
-        if(null == role)    return null;
+    public static RoleDTO toRoleDTO(Role role) {
+        if (null == role) return null;
 
         RoleDTO roleDTO = new RoleDTO();
 
@@ -43,16 +43,17 @@ public class DataMapping {
     }
 
     /*
-    * Convert UserDTO to User
-    * */
-    public static User toUser(UserDTO userDTO){
-        if (userDTO == null)   return null;
+     * Convert UserDTO to User
+     * */
+    public static User toUser(UserDTO userDTO) {
+        if (userDTO == null) return null;
 
         User user = new User();
 
+        user.setId(userDTO.getId());
         user.setFullName(userDTO.getFullName());
         user.setUserName(userDTO.getUsername());
-     //   user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
+        //   user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
         user.setRole(toRole(userDTO.getRoleDTO()));
 
         return user;
@@ -61,7 +62,7 @@ public class DataMapping {
     /*
      * Convert User to UserDTO
      * */
-    public static UserDTO toUserDTO(User user){
+    public static UserDTO toUserDTO(User user) {
         if (null == user) return null;
 
         UserDTO userDTO = new UserDTO();
@@ -69,63 +70,62 @@ public class DataMapping {
         userDTO.setId(user.getId());
         userDTO.setFullName(user.getFullName());
         userDTO.setUsername(user.getUserName());
-        userDTO.setPassword(null);
+        userDTO.setPassword(user.getPassWord());
         userDTO.setRoleDTO(toRoleDTO(user.getRole()));
 
         return userDTO;
     }
 
     /*
-    * Convert Objet GameDTO to Game
-    * */
-    public static Game toGame(GameDTO gameDTO){
-        if(gameDTO == null)   return null;
+     * Convert Objet GameDTO to Game
+     * */
+    public static Game toGame(GameDTO gameDTO) {
+        if (gameDTO == null) return null;
 
         Game game = new Game();
 
         game.setId(gameDTO.getId());
         game.setScore(0);   //Because when we wanted to create a new game the score will be calculated
+        game.setAnswers(null);
         game.setUser(toUser(gameDTO.getUserDTO()));
 
         return game;
     }
 
     /*
-    * Convert Objet Game to GameDTO
-    * */
-    public static GameDTO toGameDTO(Game game){
-        if(null == game)    return null;
-
-        GameDTO gameDTO = new GameDTO();
-
-        gameDTO.setId(game.getId());
-        gameDTO.setScore(game.getScore());
-        gameDTO.setUserDTO(toUserDTO(game.getUser()));
-
-        return gameDTO;
-    }
-
-    /*
      * Convert Objet Game to GameDTO
      * */
-    public static GameDTO toGameDTOWithQuestion(Game game){
-        if(null == game)    return null;
+    public static GameDTO toGameDTO(Game game) {
+        if (null == game) return null;
 
         GameDTO gameDTO = new GameDTO();
 
         gameDTO.setId(game.getId());
         gameDTO.setScore(game.getScore());
+        gameDTO.setAnswersDTO(game.getAnswers());
         gameDTO.setUserDTO(toUserDTO(game.getUser()));
 
         return gameDTO;
     }
 
+    /*
+    * Convert a list of Games to a list of GameDTO
+    * */
+    public static @NotNull List<GameDTO> toGameDTOS(@NotNull List<Game> games) {
+        List<GameDTO> gameDTOS = new ArrayList<>();
+
+        for (Game game : games) {
+            gameDTOS.add(toGameDTO(game));
+        }
+
+        return gameDTOS;
+    }
 
     /*
-    * Convert Objet QuestionDTO to Question
-    * */
-    public static Question toQuestion(QuestionDTO questionDTO){
-        if(questionDTO == null)    return null;
+     * Convert Objet QuestionDTO to Question
+     * */
+    public static Question toQuestion(QuestionDTO questionDTO) {
+        if (questionDTO == null) return null;
 
         Question question = new Question();
 
@@ -137,10 +137,10 @@ public class DataMapping {
     }
 
     /*
-    * Convert Objet Question to QuestionDTO
-    * */
-    public static QuestionDTO toQuestionDTO(Question question){
-        if(null == question)    return null;
+     * Convert Objet Question to QuestionDTO
+     * */
+    public static QuestionDTO toQuestionDTO(Question question) {
+        if (null == question) return null;
 
         QuestionDTO questionDTO = new QuestionDTO();
 
@@ -153,10 +153,10 @@ public class DataMapping {
     }
 
     /*
-     * Convert Objet Question to QuestionDTO with out answers
+     * Convert Objet Question to QuestionDTO without answers
      * */
-    public static QuestionDTO toQuestionDTOWithOutAnswers(Question question){
-        if(null == question)    return null;
+    public static QuestionDTO toQuestionDTOWithOutAnswers(Question question) {
+        if (null == question) return null;
 
         QuestionDTO questionDTO = new QuestionDTO();
 
@@ -168,10 +168,23 @@ public class DataMapping {
     }
 
     /*
-    * Convert Objet AnswerDTO to Answer
-    **/
-    public static Answer toAnswer(AnswerDTO answerDTO){
-        if(answerDTO == null)   return null;
+    * Convert a list of Question to a list of QuestionDTO
+    * */
+    public static @NotNull List<QuestionDTO> toQuestionDTOS(@NotNull List<Question> questions) {
+        List<QuestionDTO> questionDTOS = new ArrayList<>();
+
+        for(Question question : questions){
+            questionDTOS.add(toQuestionDTO(question));
+        }
+
+        return questionDTOS;
+    }
+
+    /*
+     * Convert Objet AnswerDTO to Answer
+     **/
+    public static Answer toAnswer(AnswerDTO answerDTO) {
+        if (answerDTO == null) return null;
 
         Answer answer = new Answer();
 
@@ -183,10 +196,10 @@ public class DataMapping {
     }
 
     /*
-    * Convert Objet Answer to AnswerDTO
-    * */
-    public static AnswerDTO toAnswerDTO(Answer answer){
-        if(null == answer)  return null;
+     * Convert Objet Answer to AnswerDTO
+     * */
+    public static AnswerDTO toAnswerDTO(Answer answer) {
+        if (null == answer) return null;
 
         AnswerDTO answerDTO = new AnswerDTO();
 
@@ -200,8 +213,8 @@ public class DataMapping {
     /*
      * Convert Objet Answer to AnswerDTO WithOut Question
      * */
-    public static AnswerDTO toAnswerDTOWithOutQuestion(Answer answer){
-        if(null == answer)  return null;
+    public static AnswerDTO toAnswerDTOWithOutQuestion(Answer answer) {
+        if (null == answer) return null;
 
         AnswerDTO answerDTO = new AnswerDTO();
 
@@ -214,9 +227,9 @@ public class DataMapping {
     /*
      * To convert a list of Answer to a list of AnswerDTO
      * */
-    private static List<AnswerDTO> toAnswersDTOWithOutQuestion(List<Answer> answers) {
+    private static @NotNull List<AnswerDTO> toAnswersDTOWithOutQuestion(@NotNull List<Answer> answers) {
         List<AnswerDTO> answerDTOS = new ArrayList<>();
-        for (Answer answer : answers){
+        for (Answer answer : answers) {
             answerDTOS.add(toAnswerDTOWithOutQuestion(answer));
         }
 

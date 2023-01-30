@@ -30,7 +30,7 @@ public class UserRestController {
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
-    @PostMapping("/createUser")
+    @PostMapping("/add")
     ResponseEntity<String> createGamer(@RequestBody UserDTO userDTO) {
         String message = usersService.createGamer(DataMapping.toUser(userDTO));
 

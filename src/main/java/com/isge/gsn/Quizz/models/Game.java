@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 /*
@@ -24,13 +25,15 @@ public class Game {
 
     private double score;
 
+    // To Save answers of the gamer
+    private List<String> answers;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "game")
     Set<Moment> momentSet;
-
 
     @Column(name = "created_at",updatable = false)
     @CreationTimestamp

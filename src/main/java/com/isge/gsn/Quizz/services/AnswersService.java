@@ -36,8 +36,8 @@ public class AnswersService {
     public String createAnswer(Answer answer) {
         try {
             Optional<Question> optionalQuestion = Optional.ofNullable(questionsService.readQuestion(answer.getQuestion().getId()));
-            Question question;
-            question = optionalQuestion.orElseGet(() -> questionsService.save(answer.getQuestion()));
+
+            Question question = optionalQuestion.orElseGet(() -> questionsService.save(answer.getQuestion()));
 
             answer.setQuestion(question);
 

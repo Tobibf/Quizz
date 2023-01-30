@@ -1,6 +1,7 @@
 package com.isge.gsn.Quizz.repositories;
 
 import com.isge.gsn.Quizz.models.Game;
+import com.isge.gsn.Quizz.models.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

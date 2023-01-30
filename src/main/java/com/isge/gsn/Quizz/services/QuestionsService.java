@@ -80,4 +80,15 @@ public class QuestionsService {
             return "Unsuccessful deleting";
         }
     }
+
+    /*
+     * To Get the 5 questions of a game; id is game_id
+     * */
+    public List<Question> gameQuestions(long id){
+        return questionsRepository.gameQuestions(id);
+    }
+
+    public List<Question> test(){
+        return questionsRepository.test();
+    }
 }

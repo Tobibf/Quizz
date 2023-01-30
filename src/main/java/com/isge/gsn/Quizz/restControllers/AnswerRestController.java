@@ -34,8 +34,8 @@ public class AnswerRestController {
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
-    @GetMapping("/byQuestion")
-    ResponseEntity<List<AnswerDTO>> answersByQuestion(QuestionDTO questionDTO) {
+    @PostMapping("/byQuestion")
+    ResponseEntity<List<AnswerDTO>> answersByQuestion(@RequestBody QuestionDTO questionDTO) {
 
         List<Answer> answers = answersService.answersByQuestion(DataMapping.toQuestion(questionDTO));
 
