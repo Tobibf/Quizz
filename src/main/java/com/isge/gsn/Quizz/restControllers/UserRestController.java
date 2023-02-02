@@ -1,11 +1,13 @@
 package com.isge.gsn.Quizz.restControllers;
 
+import com.isge.gsn.Quizz.dto.RoleDTO;
 import com.isge.gsn.Quizz.dto.UserDTO;
 import com.isge.gsn.Quizz.models.User;
 import com.isge.gsn.Quizz.services.UsersService;
 import com.isge.gsn.Quizz.utils.DataMapping;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequestMapping(value = "/api/users")
 @Slf4j
 @AllArgsConstructor
+/*CRUD, login and Listing functions*/
 public class UserRestController {
     private final UsersService usersService;
 
@@ -67,5 +70,13 @@ public class UserRestController {
         String message = usersService.deleteUser(id);
 
         return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    ResponseEntity<UserDTO> login(@RequestBody UserDTO userDTO) {
+
+        UserDTO logUserDTO = DataMapping.toUserDTO(usersService.login(DataMapping.toUser(userDTO)));
+
+        return new ResponseEntity<>(logUserDTO, HttpStatus.OK);
     }
 }

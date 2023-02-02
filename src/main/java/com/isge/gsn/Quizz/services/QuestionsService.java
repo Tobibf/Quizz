@@ -60,10 +60,12 @@ public class QuestionsService {
 
                 Question newQuestion = questionsRepository.findById(question.getId()).orElse(null);
 
-                newQuestion.setContent(question.getContent());
-                newQuestion.setAnswer(question.getAnswer());
+                if (newQuestion != null) {
+                    newQuestion.setContent(question.getContent());
+                    newQuestion.setAnswer(question.getAnswer());
+                    questionsRepository.save(newQuestion);
+                }
 
-                questionsRepository.save(newQuestion);
                 return "Question " + newQuestion.getContent() + " updated successfully";
             }
             return "Question not exist";
@@ -88,7 +90,5 @@ public class QuestionsService {
         return questionsRepository.gameQuestions(id);
     }
 
-    public List<Question> test(){
-        return questionsRepository.test();
-    }
+
 }

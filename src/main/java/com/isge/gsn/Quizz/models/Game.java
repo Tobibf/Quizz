@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 /*
-* This model is the representation of Quiz Part
-* */
+ * This model is the representation of Quiz Part
+ * */
 
 @Entity
 @Getter
@@ -32,10 +32,10 @@ public class Game {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<Moment> momentSet;
 
-    @Column(name = "created_at",updatable = false)
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

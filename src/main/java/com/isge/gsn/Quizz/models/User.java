@@ -1,7 +1,7 @@
 package com.isge.gsn.Quizz.models;
 /*
-* This Model is for User of this API
-* */
+ * This Model is for User of this API
+ * */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -24,9 +24,11 @@ public class User {
 
     @Column(name = "full_name")
     private String fullName;
-    @Column(name = "username")
+
+    @Column(name = "username", unique = true)
     private String userName;
-    @Column(name = "password")
+
+    @Column(name = "password", nullable = false)
     private String passWord;
 
     @ManyToOne
@@ -37,7 +39,7 @@ public class User {
     @JsonIgnore
     private List<Game> gameList;
 
-    @Column(name = "created_at",updatable = false)
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

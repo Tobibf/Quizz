@@ -1,7 +1,7 @@
 package com.isge.gsn.Quizz.models;
 /*
-* This model is for management of Admin and Gamers
-* */
+ * This model is for management of Admin and Gamers
+ * */
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,7 +23,7 @@ public class Role {
     @Column(unique = true)
     private String name;
 
-    @Column(name = "created_at",updatable = false)
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

@@ -1,7 +1,6 @@
 package com.isge.gsn.Quizz.restControllers;
 
 import com.isge.gsn.Quizz.dto.GameDTO;
-import com.isge.gsn.Quizz.dto.QuestionDTO;
 import com.isge.gsn.Quizz.dto.UserDTO;
 import com.isge.gsn.Quizz.services.GamesService;
 import com.isge.gsn.Quizz.services.QuestionsService;
@@ -26,8 +25,8 @@ public class GameRestController {
     private final GameMapping gameMapping;
 
     /*
-    * List all Games
-    * */
+     * List all Games
+     * */
     @GetMapping
     ResponseEntity<List<GameDTO>> allGames() {
 
@@ -37,19 +36,19 @@ public class GameRestController {
     }
 
     /*
-    * Create a new Game
-    * */
+     * Create a new Game
+     * */
     @PostMapping("/newGame")
     ResponseEntity<GameDTO> newGame(@RequestBody GameDTO gameDTO) {
 
         GameDTO returnGameDTO = gameMapping.toGameDTOWithQuestions(gamesService.newGamePart(DataMapping.toGame(gameDTO)));
 
-        return new ResponseEntity<>(returnGameDTO, HttpStatus.OK);
+        return new ResponseEntity<>(returnGameDTO, HttpStatus.CREATED);
     }
 
     /*
-    * To send the answers of Gamer
-    * */
+     * To send the answers of Gamer
+     * */
     @PutMapping("/sendGame")
     ResponseEntity<GameDTO> sendGame(@RequestBody GameDTO gameDTO) {
 
@@ -59,8 +58,8 @@ public class GameRestController {
     }
 
     /*
-    * Get the list of Game of a specific Gamer
-    * */
+     * Get the list of Game of a specific Gamer
+     * */
     @PostMapping("/gamesByUser")
     ResponseEntity<List<GameDTO>> gamesByUser(@RequestBody UserDTO userDTO) {
 
@@ -69,19 +68,12 @@ public class GameRestController {
         return new ResponseEntity<>(returnGamesDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/test")
-    ResponseEntity<List<QuestionDTO>> test() {
-
-        List<QuestionDTO> returnGamesDTO = DataMapping.toQuestionDTOS(questionsService.test());
-
-        return new ResponseEntity<>(returnGamesDTO, HttpStatus.OK);
-    }
 
     /*
-    * Read a Game
-    * */
+     * Read a Game
+     * */
     @GetMapping("/view/{id}")
-    ResponseEntity<GameDTO> read(@PathVariable long id){
+    ResponseEntity<GameDTO> read(@PathVariable long id) {
 
         GameDTO readGameDTO = gameMapping.toGameDTOWithQuestions(gamesService.readGame(id));
 
@@ -89,10 +81,10 @@ public class GameRestController {
     }
 
     /*
-    * Read a game which belong to a user
-    * */
+     * Read a game which belong to a user
+     * */
     @PostMapping("/view/{id}")
-    ResponseEntity<GameDTO> readForUser(@PathVariable long id, @RequestBody UserDTO userDTO){
+    ResponseEntity<GameDTO> readForUser(@PathVariable long id, @RequestBody UserDTO userDTO) {
 
         GameDTO readGameDTO = gameMapping.toGameDTOWithQuestions(gamesService.readGameForUser(id, DataMapping.toUser(userDTO)));
 
@@ -100,12 +92,12 @@ public class GameRestController {
     }
 
     /*
-    * Use to cancel a part for a user
-    * */
+     * Use to cancel a part for a user
+     * */
     @DeleteMapping("/cancelGame/{id}")
-    ResponseEntity<String> cancelGame(@PathVariable long id, @RequestBody UserDTO userDTO){
+    ResponseEntity<String> cancelGame(@PathVariable long id, @RequestBody UserDTO userDTO) {
 
-        String message  = gamesService.deleteGame(id, DataMapping.toUser(userDTO));
+        String message = gamesService.deleteGame(id, DataMapping.toUser(userDTO));
 
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

@@ -10,10 +10,6 @@ import java.util.List;
 public class DataMapping {
 
 
-    //  @Autowired
-    //private static PasswordEncoder passwordEncoder;
-
-
     /*
      * Convert Objet RoleDTO to Role
      * */
@@ -53,7 +49,7 @@ public class DataMapping {
         user.setId(userDTO.getId());
         user.setFullName(userDTO.getFullName());
         user.setUserName(userDTO.getUsername());
-        //   user.setPassWord(passwordEncoder.encode(userDTO.getPassword()));
+        user.setPassWord(Crypt.encryption(userDTO.getPassword()));
         user.setRole(toRole(userDTO.getRoleDTO()));
 
         return user;
@@ -86,7 +82,7 @@ public class DataMapping {
 
         game.setId(gameDTO.getId());
         game.setScore(0);   //Because when we wanted to create a new game the score will be calculated
-        game.setAnswers(null);
+        game.setAnswers(gameDTO.getAnswersDTO());
         game.setUser(toUser(gameDTO.getUserDTO()));
 
         return game;

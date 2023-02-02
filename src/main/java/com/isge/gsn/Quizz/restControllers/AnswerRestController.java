@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping(value = "/api/answers")
 @Slf4j
 @AllArgsConstructor
+/*CRUD,Listing and other functions*/
 public class AnswerRestController {
     private final AnswersService answersService;
 
@@ -34,6 +35,9 @@ public class AnswerRestController {
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
+    /*
+    * Get all answers which belongs to a specific question
+    * */
     @PostMapping("/byQuestion")
     ResponseEntity<List<AnswerDTO>> answersByQuestion(@RequestBody QuestionDTO questionDTO) {
 

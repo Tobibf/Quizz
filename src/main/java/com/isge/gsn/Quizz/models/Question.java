@@ -1,8 +1,8 @@
 package com.isge.gsn.Quizz.models;
 
 /*
-* This model is use for Questions which will be used for Game
-* */
+ * This model is use for Questions which will be used for Game
+ * */
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,15 +26,15 @@ public class Question {
     private String content;
     private String answer;
 
-    @OneToMany(mappedBy = "question")
-   // @JsonIgnore
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    // @JsonIgnore
     private List<Answer> answers;
 
     @OneToMany(mappedBy = "question")
     Set<Moment> momentSet;
 
 
-    @Column(name = "created_at",updatable = false)
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

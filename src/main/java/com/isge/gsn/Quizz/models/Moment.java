@@ -1,8 +1,8 @@
 package com.isge.gsn.Quizz.models;
 
 /*
-* This model is use like bridge For Question and Game
-* */
+ * This model is use like bridge For Question and Game
+ * */
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,11 +29,11 @@ public class Moment {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @Column(name = "game_time",updatable = true)
+    @Column(name = "game_time", updatable = true)
     @UpdateTimestamp
     private LocalDateTime gameTime;
 
-    @Column(name = "created_at",updatable = false)
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 

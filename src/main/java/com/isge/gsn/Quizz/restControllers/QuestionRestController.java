@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping(value = "/api/questions")
 @Slf4j
 @AllArgsConstructor
+/*CRUD and Listing functions*/
 public class QuestionRestController {
 
     private final QuestionsService questionService;

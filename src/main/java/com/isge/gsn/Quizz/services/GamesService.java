@@ -1,6 +1,9 @@
 package com.isge.gsn.Quizz.services;
 
-import com.isge.gsn.Quizz.models.*;
+import com.isge.gsn.Quizz.models.Game;
+import com.isge.gsn.Quizz.models.Moment;
+import com.isge.gsn.Quizz.models.Question;
+import com.isge.gsn.Quizz.models.User;
 import com.isge.gsn.Quizz.repositories.GamesRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -77,6 +79,11 @@ public class GamesService {
             double score = 0;
 
             Game newGame = gamesRepository.findById(oldGame.getId()).orElse(null);
+
+            // Block correction twice
+            if (newGame == null || !newGame.getAnswers().isEmpty()) {
+                return null;
+            }
 
             int index = 0;
             for (Question question : questionsService.gameQuestions(oldGame.getId())) {

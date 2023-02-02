@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class MomentDTO {
     private long id;
-
     private GameDTO gameDTO;
     private QuestionDTO questionDTO;
 }

@@ -5,6 +5,7 @@ import com.isge.gsn.Quizz.models.User;
 import com.isge.gsn.Quizz.repositories.UsersRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,12 +15,12 @@ import java.util.Optional;
 @AllArgsConstructor
 @Slf4j
 public class UsersService {
-    private final UsersRepository usersJPARepository;
+    private final UsersRepository usersRepository;
     private final RolesService rolesService;
 
     public List<User> userList() {
         try {
-            return usersJPARepository.findAll();
+            return usersRepository.findAll();
         } catch (Exception exception) {
             log.info(exception.toString());
             return null;
@@ -34,7 +35,7 @@ public class UsersService {
             Role gameRole = rolesService.readRole(2);
             user.setRole(gameRole);
 
-            usersJPARepository.save(user);
+            usersRepository.save(user);
             return "User " + user.getFullName() + " created successfully";
         } catch (Exception e) {
             return "Unsuccessful creation";
@@ -46,11 +47,11 @@ public class UsersService {
      * */
     public String createAdmin(User user) {
         try {
-            if (usersJPARepository.findAdmin().isEmpty()) {
+            if (usersRepository.findAdmin().isEmpty()) {
                 Role gameRole = rolesService.readRole(1);
                 user.setRole(gameRole);
 
-                usersJPARepository.save(user);
+                usersRepository.save(user);
                 return "User " + user.getFullName() + " created successfully";
             }
             return "Admin already exist";
@@ -59,20 +60,22 @@ public class UsersService {
         }
     }
 
-    public User readUser(Long id) {
-        return usersJPARepository.findById(id).orElse(null);
+    public User readUser(long id) {
+        return usersRepository.findById(id).orElse(null);
     }
 
     public String updateUser(User oldUser) {
         try {
-            if (usersJPARepository.existsById(oldUser.getId())) {
+            if (usersRepository.existsById(oldUser.getId())) {
                 /**
                  * Get the oldUser to database and update attribute FullName
                  * */
-                User newUser = usersJPARepository.findById(oldUser.getId()).orElse(null);
+                User newUser = usersRepository.findById(oldUser.getId()).orElse(null);
                 newUser.setFullName(oldUser.getFullName());
+                newUser.setUserName(oldUser.getUserName());
+                newUser.setPassWord(oldUser.getPassWord());
 
-                usersJPARepository.save(newUser);
+                usersRepository.save(newUser);
                 return "User " + newUser.getFullName() + " updated successfully";
             }
             return "User not exist";
@@ -83,7 +86,7 @@ public class UsersService {
 
     public String deleteUser(long id) {
         try {
-            usersJPARepository.deleteById(id);
+            usersRepository.deleteById(id);
             return "User deleted successfully";
         } catch (Exception e) {
             return "Unsuccessful deleting";
@@ -91,15 +94,31 @@ public class UsersService {
     }
 
     public Optional<User> findByFullName(String fullName) {
-        return usersJPARepository.findByFullName(fullName);
+        return usersRepository.findByFullName(fullName);
     }
 
     public Optional<User> getAdmin() {
-        return usersJPARepository.findAdmin();
+        return usersRepository.findAdmin();
     }
 
-    public Boolean userExist(long id){
-        return usersJPARepository.existsById(id);
+    public Boolean userExist(long id) {
+        return usersRepository.existsById(id);
+    }
+
+    public User login(@NotNull User user) {
+        try {
+            if (userExist(user.getId())) {
+                Optional<User> trueUser = usersRepository.findByUserName(user.getUserName());
+
+                if (user.getPassWord().equals(trueUser.get().getPassWord())) {
+                    return trueUser.get();
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
 }

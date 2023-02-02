@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping(value = "/api/roles")
 @Slf4j
 @AllArgsConstructor
+/*CRUD and Listing functions*/
 public class RoleRestController {
 
     private final RolesService rolesService;
@@ -37,7 +38,7 @@ public class RoleRestController {
     @PostMapping("/add")
     ResponseEntity<RoleDTO> create(@RequestBody RoleDTO roleDTO) {
 
-        Role role= rolesService.saveRole(DataMapping.toRole(roleDTO));
+        Role role = rolesService.saveRole(DataMapping.toRole(roleDTO));
 
         return new ResponseEntity<>(DataMapping.toRoleDTO(role), HttpStatus.CREATED);
     }

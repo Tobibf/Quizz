@@ -9,8 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 /*
-* This model is for the possible answers of the questions
-* */
+ * This model is for the possible answers of the questions
+ * */
 @Entity
 @Getter
 @Setter
@@ -26,7 +26,7 @@ public class Answer {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @Column(name = "created_at",updatable = false)
+    @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
