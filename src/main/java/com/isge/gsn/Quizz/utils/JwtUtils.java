@@ -2,7 +2,7 @@ package com.isge.gsn.Quizz.utils;
 
 import com.isge.gsn.Quizz.models.User;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.jetbrains.annotations.NotNull;
@@ -10,12 +10,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 
 @Component
 public class JwtUtils {
+    private final String secretKey = "MySecretKeyForThisGamingApplicationAndISGEProject";
 
     public String generateJWT(@NotNull User user) {
+
 
         long milliTime = System.currentTimeMillis();
         // Allow 3600 seconds
@@ -34,15 +35,31 @@ public class JwtUtils {
 
 
         //Generate Jwt using Claims
-        String secret = "This_is_secret";
 
-        JwtBuilder jwt = Jwts.builder()
+
+        String jwt = Jwts.builder()
                 .setClaims(claims)
-                .signWith(HS256, secret)
-                ;
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
 
-        return jwt.compact();
+        return jwt;
     }
 
 
+    public String verifyJwt(String jwt) {
+        try {
+
+            Jws<Claims> jws;
+
+            jws = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(jwt);
+
+            //Return role if Token is valid
+            return jws.getBody().get("Role").toString();
+        } catch (Exception e) {
+           return "";
+        }
+    }
 }

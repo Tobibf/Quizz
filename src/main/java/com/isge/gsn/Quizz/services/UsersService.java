@@ -106,7 +106,6 @@ public class UsersService {
 
     public LoggedUser login(@NotNull User user) {
         try {
-
             //Try to get user
             Optional<User> trueUser = usersRepository.findByUserNameAndPassWord(user.getUserName(), user.getPassWord());
 

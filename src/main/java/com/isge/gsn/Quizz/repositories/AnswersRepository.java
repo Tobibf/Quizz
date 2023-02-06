@@ -9,6 +9,6 @@ import java.util.List;
 
 
 public interface AnswersRepository extends JpaRepository<Answer, Long> {
-    @Query(nativeQuery = true, value = "SELECT * FROM answers a WHERE a.question_id = :id")
+    @Query(nativeQuery = true, value = "SELECT a.* FROM answers a WHERE a.question_id = :id")
     List<Answer> findByQuestion(@Param(value = "id") long id);
 }
