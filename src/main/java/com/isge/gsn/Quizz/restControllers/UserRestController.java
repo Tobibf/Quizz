@@ -1,10 +1,12 @@
 package com.isge.gsn.Quizz.restControllers;
 
+import com.isge.gsn.Quizz.dto.LoggedUser;
 import com.isge.gsn.Quizz.dto.RoleDTO;
 import com.isge.gsn.Quizz.dto.UserDTO;
 import com.isge.gsn.Quizz.models.User;
 import com.isge.gsn.Quizz.services.UsersService;
 import com.isge.gsn.Quizz.utils.DataMapping;
+import com.isge.gsn.Quizz.utils.GameMapping;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +24,7 @@ import java.util.List;
 /*CRUD, login and Listing functions*/
 public class UserRestController {
     private final UsersService usersService;
+    private final GameMapping gameMapping;
 
     @GetMapping
     ResponseEntity<List<UserDTO>> findAll() {
@@ -35,7 +38,7 @@ public class UserRestController {
 
     @PostMapping("/add")
     ResponseEntity<String> createGamer(@RequestBody UserDTO userDTO) {
-        String message = usersService.createGamer(DataMapping.toUser(userDTO));
+        String message = usersService.createGamer(gameMapping.toUserWithPassword(userDTO));
 
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
@@ -43,7 +46,7 @@ public class UserRestController {
     @PostMapping("/createUser/admin/admin/Quiz")
     ResponseEntity<String> createAdmin(@RequestBody UserDTO userDTO) {
 
-        String message = usersService.createAdmin(DataMapping.toUser(userDTO));
+        String message = usersService.createAdmin(gameMapping.toUserWithPassword(userDTO));
 
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
@@ -59,7 +62,7 @@ public class UserRestController {
     @PutMapping("/update")
     ResponseEntity<String> update(@RequestBody UserDTO userDTO) {
 
-        String message = usersService.updateUser(DataMapping.toUser(userDTO));
+        String message = usersService.updateUser(gameMapping.toUserWithPassword(userDTO));
 
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -73,9 +76,9 @@ public class UserRestController {
     }
 
     @PostMapping("/login")
-    ResponseEntity<UserDTO> login(@RequestBody UserDTO userDTO) {
+    ResponseEntity<LoggedUser> login(@RequestBody UserDTO userDTO) {
 
-        UserDTO logUserDTO = DataMapping.toUserDTO(usersService.login(DataMapping.toUser(userDTO)));
+        LoggedUser logUserDTO = usersService.login(gameMapping.toUserWithPassword(userDTO));
 
         return new ResponseEntity<>(logUserDTO, HttpStatus.OK);
     }

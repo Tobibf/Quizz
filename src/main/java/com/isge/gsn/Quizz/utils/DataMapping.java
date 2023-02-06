@@ -49,7 +49,6 @@ public class DataMapping {
         user.setId(userDTO.getId());
         user.setFullName(userDTO.getFullName());
         user.setUserName(userDTO.getUsername());
-        user.setPassWord(Crypt.encryption(userDTO.getPassword()));
         user.setRole(toRole(userDTO.getRoleDTO()));
 
         return user;
@@ -70,6 +69,22 @@ public class DataMapping {
         userDTO.setRoleDTO(toRoleDTO(user.getRole()));
 
         return userDTO;
+    }
+
+    /*
+     * Convert User to LoggedUser
+     * */
+    public static LoggedUser toLoggedUser(User user, String token) {
+        if (null == user) return null;
+
+        LoggedUser loggedUser = new LoggedUser();
+
+        loggedUser.setId(user.getId());
+        loggedUser.setFullName(user.getFullName());
+
+        loggedUser.setToken(token);
+
+        return loggedUser;
     }
 
     /*

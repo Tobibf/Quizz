@@ -1,11 +1,15 @@
 package com.isge.gsn.Quizz.services;
 
+import com.isge.gsn.Quizz.dto.LoggedUser;
 import com.isge.gsn.Quizz.models.Role;
 import com.isge.gsn.Quizz.models.User;
 import com.isge.gsn.Quizz.repositories.UsersRepository;
+import com.isge.gsn.Quizz.utils.DataMapping;
+import com.isge.gsn.Quizz.utils.JwtUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +21,9 @@ import java.util.Optional;
 public class UsersService {
     private final UsersRepository usersRepository;
     private final RolesService rolesService;
+
+    @Autowired
+    private JwtUtils jwtUtils;
 
     public List<User> userList() {
         try {
@@ -64,10 +71,10 @@ public class UsersService {
         return usersRepository.findById(id).orElse(null);
     }
 
-    public String updateUser(User oldUser) {
+    public String updateUser(@NotNull User oldUser) {
         try {
             if (usersRepository.existsById(oldUser.getId())) {
-                /**
+                /*
                  * Get the oldUser to database and update attribute FullName
                  * */
                 User newUser = usersRepository.findById(oldUser.getId()).orElse(null);
@@ -93,29 +100,26 @@ public class UsersService {
         }
     }
 
-    public Optional<User> findByFullName(String fullName) {
-        return usersRepository.findByFullName(fullName);
-    }
-
-    public Optional<User> getAdmin() {
-        return usersRepository.findAdmin();
-    }
-
     public Boolean userExist(long id) {
         return usersRepository.existsById(id);
     }
 
-    public User login(@NotNull User user) {
+    public LoggedUser login(@NotNull User user) {
         try {
-            if (userExist(user.getId())) {
-                Optional<User> trueUser = usersRepository.findByUserName(user.getUserName());
 
-                if (user.getPassWord().equals(trueUser.get().getPassWord())) {
-                    return trueUser.get();
-                }
+            //Try to get user
+            Optional<User> trueUser = usersRepository.findByUserNameAndPassWord(user.getUserName(), user.getPassWord());
+
+            //Verify is user with these credentials exists
+            if (trueUser.isEmpty()) {
+                return null;
             }
-            return null;
+            //Generate Jwt
+            String token = jwtUtils.generateJWT(trueUser.get());
+
+            return DataMapping.toLoggedUser(trueUser.get(), token);
         } catch (Exception e) {
+            log.info(e.toString());
             return null;
         }
 
